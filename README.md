@@ -43,7 +43,7 @@ Enter the administrator credentials and select Yes: <br/>
 <br />
 <br />
 Select Allow remote connections to this computer and deselect Allow connections only from computers running Remote Desktop: <br/>
-<img src="https://imagizer.imageshack.com/img924/6117/c1Mx2w.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<img src="https://imagizer.imageshack.com/img923/6223/AFOZOr.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
 Verify that a remote connection is available by connecting from the server to the client using RDP. Click Start at the bottom left and search for Remote Desktop Connection: <br/>
@@ -73,130 +73,92 @@ Navigate to the inbound rules tab and note that Remote Desktop on port 3389 is a
 
 
 
-<h2>Grant Permission Levels:</h2>
-On the domain controller go back to the Resource folder created in the Local Disk (C:) Directory and right-click it. Select properties, navigate to the security tab, and select advanced: <br/>
-<img src="https://imagizer.imageshack.com/img922/4379/z2wlSb.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+<h2>Firewall Rule Policy Configuration:</h2>
+Go to the domain controller and open the Active Directory Users and Computers window. Right-click cyber.local and use the drop-down menu to create a new Organizational Unit (OU): <br/>
+<img src="https://imagizer.imageshack.com/img924/7224/LAr7tW.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Disable the inheritence and select the second option. This will remove permissions for users. Then, click Add to add a new principle: <br/>
-<img src="https://imagizer.imageshack.com/img924/7180/nW2Uwz.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Name the OU "RDP Restricted" and click OK: <br/>
+<img src="https://imagizer.imageshack.com/img922/8501/AKCseE.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Click Select a principal: <br/>
-<img src="https://imagizer.imageshack.com/img922/1523/YI3wuv.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Find the Client10 object under Computers and right-click move it to the RDP Restricted OU: <br/>
+<img src="https://imagizer.imageshack.com/img923/3088/17olZi.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Select Salesperson1: <br/>
-<img src="https://imagizer.imageshack.com/img924/4268/NY5Mt5.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+In Group Policy Mangement, right-click the Group Policy OU and create a new GPO: <br/>
+<img src="https://imagizer.imageshack.com/img924/9195/eQ5qxk.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Allow the user to modify files within the folder: <br/>
-<img src="https://imagizer.imageshack.com/img922/6703/RMNxAw.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Name the GPO "RDP Restriction" and click OK: <br/>
+<img src="https://imagizer.imageshack.com/img924/7782/fi7SrX.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Check the changes made by logging into Salesperson1 on the client machine and trying to access the Resource folder through the shared drive: <br/>
-<img src="https://imagizer.imageshack.com/img924/3589/E0fSCM.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Edit the RDP Restriction GPO again: <br/>
+<img src="https://imagizer.imageshack.com/img923/9359/YeDw0I.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Switch to the domain controller (admin account) and create a new user within the Users container named Worker1: <br/>
-<img src="https://imagizer.imageshack.com/img922/415/JFCRJE.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Locate Inbound Rules under Windows Firewall with Advanced Security: <br/>
+<img src="https://imagizer.imageshack.com/img923/4931/Rzpjku.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Create a new user named Wokrer1: <br/>
-<img src="https://imagizer.imageshack.com/img923/5182/UBtRJo.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Right-click Inbound Rules to create a New Rule: <br/>
+<img src="https://imagizer.imageshack.com/img924/3940/cA0UKS.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Set the password of your choosing and complete the user definition. For convenience purposes, deselect all of the boxes <br/>
-<img src="https://imagizer.imageshack.com/img922/7044/WWTVPB.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Check Port, click Next: <br/>
+<img src="https://imagizer.imageshack.com/img924/3363/FPetQq.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Allow only worker1 to access the Workers shared folder by changing permissions from the Security tab as completed in prior steps. Disable the inheritence and grant read-only and execute permissions: <br/>
-<img src="https://imagizer.imageshack.com/img923/7828/KfmCW0.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Check TCP and Specific Local Ports. Enter 3389 (RDP). Click Next: <br/>
+<img src="https://imagizer.imageshack.com/img923/5344/4uoLLg.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Add a new permission and click "Select a principal" enter "Worker1" and click Check Names, OK: <br/>
-<img src="https://imagizer.imageshack.com/img923/6444/Ng4MHB.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Check the box to Block the connection. Click next: <br/>
+<img src="https://imagizer.imageshack.com/img922/2536/cS74PF.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Check the boxes to grant specific permissions: <br/>
-<img src="https://imagizer.imageshack.com/img924/990/vDqjUE.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Check all boxes on the next screen. Click next: <br/>
+<img src="https://imagizer.imageshack.com/img923/8259/PxpfnA.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Verify that the worker1 user has permission to read & execute the Workers folder: <br/>
-<img src="https://imagizer.imageshack.com/img922/7128/Bgi8Vp.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Name the new rule "Custom RDP Rule" and click Finish: <br/>
+<img src="https://imagizer.imageshack.com/img924/1084/9G9GRC.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Switch to the client machine. log into Salesperson1 and try to access the Workers folder. You should receive a Cannot Access message. However, you should have access to the Sales folder: <br/>
-<img src="https://imagizer.imageshack.com/img922/9904/tG4aZt.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+In Group Policy Management, right-click the RDP Restricted OU and select Link a existing GPO: <br/>
+<img src="https://imagizer.imageshack.com/img924/6559/XSbjU6.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Navigate to the directory. right-click it, go to Properties/Security: <br/>
-<img src="https://imagizer.imageshack.com/img923/7274/99Lfpq.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-On the client, switch users to Worker1. You can do this easily by running "Logoff": <br/>
-<img src="https://imagizer.imageshack.com/img922/9646/Sl7Lzi.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Log in as cyber\Worker1: <br/>
-<img src="https://imagizer.imageshack.com/img922/4800/7alDPZ.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Open the Run window and type \\\server1 to access the Resource folder. You should be unable to see Sales but have access to Workers: <br/>
-<img src="https://imagizer.imageshack.com/img924/4307/urd5mP.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Error message from trying to access Sales folder: <br/>
-<img src="https://imagizer.imageshack.com/img924/8978/bDkwna.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Try to create a new folder in the Workers folder. You should receive an error due to insufficient permissions: <br/>
-<img src="https://imagizer.imageshack.com/img922/2914/QZCJxj.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Switch back to the domain controller and assign Worker1 full control permissions for the Workers folder.: <br/>
-<img src="https://imagizer.imageshack.com/img923/8055/EBgwIA.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Click apply and OK: <br/>
-<img src="https://imagizer.imageshack.com/img922/32/IEMJWo.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Test the change under Wokrer1. Notice that you can now add a folder within the Workers directory: <br/>
-<img src="https://imagizer.imageshack.com/img922/4366/yFTxUe.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Click the RDP Restriction GPO, click OK
+<img src="https://imagizer.imageshack.com/img922/5460/ezR80i.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
 
 
-<h2>Creating a Hidden Folder:</h2>
-On the DC machine, go to your C: directory and create a folder called "You_can't_see_me": <br/>
-<img src="https://imagizer.imageshack.com/img923/3271/jyBxE4.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+
+<h2>Rule Verification:</h2>
+On the Windows 10 client, run the command "gpupdate /force" to update the policy: <br/>
+<img src="https://imagizer.imageshack.com/img924/668/MEoIrm.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Go to the folder's settings. Open the Sharing tab, click Advanced Sharing and select Share this Folder. For Share name, change the name to "You_can't_see_me$": <br/>
-<img src="https://imagizer.imageshack.com/img922/3330/FnSlZD.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+With admin permissions, open Windows Firewall with Advanced Security and expand Inbound Rules: <br/>
+<img src="https://imagizer.imageshack.com/img924/213/nwo5Nt.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Click Permissions and ensure Allow is checked for Full Control. Click Apply and OK: <br/>
-<img src="https://imagizer.imageshack.com/img922/5564/zpsg2a.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Use the Windows Start menu on the server to locate Remote Desktop Connection and click it: <br/>
+<img src="https://imagizer.imageshack.com/img922/51/6dwkTK.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Enter the You_can't_see_me folder and create a new text file: <br/>
-<img src="https://imagizer.imageshack.com/img922/232/m4Me4q.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+Type the client's PC name and click Connect: <br/>
+<img src="https://imagizer.imageshack.com/img922/6782/GLkEhi.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Log in as the Wokrer1 user and verify that the folder appears from the shared folder. Open the Run window and type \\server1. Make sure the hidden folder does not appear in the share path: <br/>
-<img src="https://imagizer.imageshack.com/img922/543/v0hAbw.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
+The server should receive the following error: <br/>
+<img src="https://imagizer.imageshack.com/img923/2834/Y5F289.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Try using the Run window to access \\server1\You_can't_see_me$ again to verify the folder's content exists: <br/>
-<img src="https://imagizer.imageshack.com/img923/5211/e2LXHu.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Note that the content is seen: <br/>
-<img src="https://imagizer.imageshack.com/img924/589/1xrihQ.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
+
 <!--
  ```diff
 - text in red
